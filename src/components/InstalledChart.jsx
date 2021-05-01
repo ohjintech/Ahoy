@@ -83,10 +83,6 @@ const InstalledChart = (props) => {
       historyArray.push(<Version/>);
     })
   };
-
-  for (let i = 0; i < 2; i++) {
-    
-  }
   
   //const histArray = showHistory(currentChartHistory)
   
