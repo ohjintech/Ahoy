@@ -11,6 +11,7 @@ import { Button } from "semantic-ui-react";
 import launchDashBoard from "../helpers/launchMiniKubeDashBoard";
 // import getHelmHistory from '../helpers/getHelmHistory';
 import Version from '../components/Version';
+import { get } from "http";
 
 class MainContainer extends Component {
   constructor(props) {
@@ -34,7 +35,7 @@ class MainContainer extends Component {
     });
 
     this.getHelmCharts = this.getHelmCharts.bind(this);
-    this.getHistory = this.getHistory.bind(this);
+    // this.getHistory = this.getHistory.bind(this);
     this.launchMiniKubeDashBoard = this.launchMiniKubeDashBoard.bind(this);
   }
 
@@ -67,6 +68,21 @@ class MainContainer extends Component {
       .then((result) => JSON.parse(result))
       .then((charts) => {
         // console.log(`Deployed charts array looks like this: ${charts}`);
+        // get their history?
+
+        // for each chart, invoke the getHistory and save it in the history property
+        charts.forEach( (chart) => {
+          getHelmHistory(chart.name)
+          .then((result) => JSON.parse(result))
+          .then((history) => {
+            // place in history property
+            console.log(`Loaded history from ${chart.name}`)
+            // chart.history = chart.hasOwnProperty(history) ? history : {}
+            chart.history = history;
+          })
+        })
+
+        // update the state with the chart object
         this.setState({
           deployedCharts: charts,
         });
@@ -74,39 +90,39 @@ class MainContainer extends Component {
   }
 
   // Jin & Joe's original version
-  getHistory(currentChart) {
-    getHelmHistory(currentChart)
-      .then((result) => JSON.parse(result))
-      .then((versions) => {
-        // can we also set state currentChartHistory here, so we can render that state as is-in InstalledChart.jsx line 111?
-        // console.log("versions", versions);
-        this.setState({
-          currentChartHistory: versions,
-        });
-        console.log("MainContainer.jsx line 86: currentChartHistory ", this.state.currentChartHistory )
-        console.log("deployedcharts", this.state.deployedCharts);
-        const newDeployedArray = this.state.deployedCharts.map((chart) => {
-          // console.log("chart: ", chart);
-          // console.log("chart name: ", chart.name);
-          if (chart.name === currentChart) {
-            console.log("entered here");
-            chart.history = versions;
-          }
-          return chart; /// <-- this was the problem
-        });
-        // // })
-        // console.log("versions: ", versions);
-        // console.log("deployedcharts2", this.state.deployedCharts);
-        // console.log("newDeployedArray: ", newDeployedArray);
-        return newDeployedArray;
-      })
-      .then((newDeployedArray) => {
-        console.log("new deployed charts: ", newDeployedArray);
-        this.setState({
-          deployedCharts: newDeployedArray,
-        });
-      });
-  }
+  // getHistory(currentChart) {
+  //   getHelmHistory(currentChart)
+  //     .then((result) => JSON.parse(result))
+  //     .then((versions) => {
+  //       // can we also set state currentChartHistory here, so we can render that state as is-in InstalledChart.jsx line 111?
+  //       // console.log("versions", versions);
+  //       this.setState({
+  //         currentChartHistory: versions,
+  //       });
+  //       console.log("MainContainer.jsx line 86: currentChartHistory ", this.state.currentChartHistory )
+  //       console.log("deployedcharts", this.state.deployedCharts);
+  //       const newDeployedArray = this.state.deployedCharts.map((chart) => {
+  //         // console.log("chart: ", chart);
+  //         // console.log("chart name: ", chart.name);
+  //         if (chart.name === currentChart) {
+  //           console.log("entered here");
+  //           chart.history = versions;
+  //         }
+  //         return chart; /// <-- this was the problem
+  //       });
+  //       // // })
+  //       // console.log("versions: ", versions);
+  //       // console.log("deployedcharts2", this.state.deployedCharts);
+  //       // console.log("newDeployedArray: ", newDeployedArray);
+  //       return newDeployedArray;
+  //     })
+  //     .then((newDeployedArray) => {
+  //       console.log("new deployed charts: ", newDeployedArray);
+  //       this.setState({
+  //         deployedCharts: newDeployedArray,
+  //       });
+  //     });
+  // }
 
 
   // getHistory(currentChart) {
