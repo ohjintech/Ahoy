@@ -126,7 +126,7 @@ const InstalledChart = (props) => {
                 </Button>
               </Table.Cell>
             </Table.Row>
-            {versionsArray}
+            {historyClicked && versionsArray}
           </Table.Body>
 
         </Table>
