@@ -41,10 +41,11 @@ const InstalledChart = (props) => {
   };
 
   const versionsArray = [];
+  console.log('Current Chart History Props: ', props);
   for (let i = 0; i < currentChartHistory.length; i++) {
     versionsArray.push(<Version
-      revision={currentChartHistory[i].revision}
-      name={currentChartHistory[i].chart}
+      key={`key-${i}`}
+      details={currentChartHistory[i]}
     />);
   }
 
@@ -77,7 +78,7 @@ const InstalledChart = (props) => {
                 </Button>
               </Table.Cell>
             </Table.Row>
-            {versionsArray}
+            {historyClicked && versionsArray}
           </Table.Body>
         </Table>
       </Table.Cell>
