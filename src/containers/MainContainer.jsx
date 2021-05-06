@@ -75,7 +75,7 @@ class MainContainer extends Component {
         return result;
       });
     }
-  }
+  
 
   getHistory(currentChart) {
     getHelmHistory(currentChart)
@@ -162,6 +162,7 @@ class MainContainer extends Component {
           // localChartsLoopCount: this.state.localChartsLoopCount += 1
         });
       });
+    }
   }
 
   // run upon successful rendering of the component
@@ -175,7 +176,7 @@ class MainContainer extends Component {
     // });
   }
 
-  render(props) {
+  // render(props) {
     // cons ole.log('MainContainer: this.state.userChartDir = ' + this.state.userChartDir);
 
   render() {
@@ -205,6 +206,6 @@ class MainContainer extends Component {
       </>
     );
   }
-}
+// }
 
 export default MainContainer;
